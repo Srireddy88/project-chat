@@ -1,9 +1,12 @@
-//install all the requirements
-sudo apt update
-sudo apt install python3-pip python3-venv python3-dev build-essential -y
+//first set up the virtual environment first
+python3 -m venv venv
 sudo python3 -m venv venv
 sudo chown -R $USER:$USER venv
 source venv/bin/activate
+//after setting up the environment install the dependencies
+
+sudo apt update
+sudo apt install python3-pip python3-venv python3-dev build-essential -y
 pip install --upgrade pip
 pip install flask
 pip list
