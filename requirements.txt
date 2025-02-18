@@ -1,3 +1,4 @@
+//install all the requirements
 sudo apt update
 sudo apt install python3-pip python3-venv python3-dev build-essential -y
 sudo python3 -m venv venv
@@ -7,3 +8,4 @@ pip install --upgrade pip
 pip install flask
 pip list
 pip install Flask googletrans==4.0.0-rc1
+
