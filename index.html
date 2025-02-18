@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Text Translator Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f6;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-box {
+            width: 100%;
+            height: 300px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-message {
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #e6e6e6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-container {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        select, textarea, button {
+            padding: 10px;
+            margin-top: 10px;
+            width: 30%;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Text Translator Chatbot</h1>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="input-container">
+            <select id="language">
+                <option value="te">Telugu</option>
+                <option value="hi">Hindi</option>
+                <option value="en">English</option>
+                <option value="ml">Malayalam</option>
+                <option value="ta">Tamil</option>
+                <option value="mr">Marathi</option>
+                <option value="bn">Bengali</option>
+                <option value="kn">Kannada</option>
+                <option value="or">Odia</option>
+                <option value="pa">Punjabi</option>
+            </select>
+            <textarea id="input-text" placeholder="Enter text here" rows="3"></textarea>
+            <button onclick="translateText()">Translate</button>
+        </div>
+        <div id="translated-text">
+            <!-- Translated text will appear here -->
+        </div>
+    </div>
+
+    <script>
+        function translateText() {
+            const text = document.getElementById('input-text').value;
+            const lang = document.getElementById('language').value;
+
+            if (text === '') {
+                alert('Please enter some text to translate.');
+                return;
+            }
+
+            // Display message in the chat box
+            const chatBox = document.getElementById('chat-box');
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('chat-message');
+            userMessage.textContent = `You: ${text}`;
+            chatBox.appendChild(userMessage);
+
+            // Call backend API to translate the text
+            fetch('http://127.0.0.1:5000/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text, lang: lang })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const translatedMessage = document.createElement('div');
+                translatedMessage.classList.add('chat-message');
+                translatedMessage.textContent = `Bot: ${data.translated_text}`;
+                chatBox.appendChild(translatedMessage);
+                chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error: Something went wrong.');
+            });
+        }
+    </script>
+</body>
+</html>
