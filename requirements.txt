@@ -1,2 +1,2 @@
-sudo apt install flask
+Flask
 googletrans==4.0.0-rc1
